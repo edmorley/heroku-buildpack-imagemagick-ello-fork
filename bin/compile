@@ -80,7 +80,10 @@ if [ ! -f $CACHE_FILE ]; then
   cd $IMAGE_MAGICK_DIR
   export CPPFLAGS="-I$INSTALL_DIR/include"
   export LDFLAGS="-L$INSTALL_DIR/lib"
-  ./configure --with-zero-configuration --prefix=$INSTALL_DIR
+  # --disable-openmp because the dependency exists in the build environment but not the runtime environment
+  # https://github.com/heroku/stack-images/blob/main/heroku-16-build/installed-packages.txt
+  # https://github.com/heroku/stack-images/blob/main/heroku-16/installed-packages.txt
+  ./configure --with-zero-configuration --disable-openmp --prefix=$INSTALL_DIR
   make && make install
   cd ..
   rm -rf $IMAGE_MAGICK_DIR
